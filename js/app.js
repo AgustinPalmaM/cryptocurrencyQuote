@@ -78,9 +78,15 @@ function callAPI() {
   const { currency, cryptoCurrency } = searchObject;
   url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${ cryptoCurrency }&tsyms=${ currency }`
 
-  fetch(url)
-  .then(response => response.json())
-  .then(data => showQuoteHtml(data.DISPLAY[cryptoCurrency][currency]))
+  showSpinner();
+  
+  setTimeout(() => {
+    
+    fetch(url)
+    .then(response => response.json())
+    .then(data => showQuoteHtml(data.DISPLAY[cryptoCurrency][currency]))
+  },1100)
+
 }
 
 function showQuoteHtml(quoteResponseApi) {
@@ -90,31 +96,35 @@ function showQuoteHtml(quoteResponseApi) {
   const { currency, cryptoCurrency } = searchObject;
   
   const price = document.createElement('P');
-  price.classList.add('precio');
+  price.classList.add('precio', 'results');
   price.textContent = 'Price is: ';
   const spanPrice = document.createElement('SPAN');
   spanPrice.textContent = PRICE;
   price.appendChild(spanPrice);
 
   const highPrice = document.createElement('P');
+  highPrice.classList.add('results')
   highPrice.textContent = 'Max Price: ';
   const spanHighPrice = document.createElement('SPAN');
   spanHighPrice.textContent = HIGHDAY;
   highPrice.appendChild(spanHighPrice);
 
   const minPrice = document.createElement('P');
+  minPrice.classList.add('results')
   minPrice.textContent = 'Min Price: ';
   const spanMinPrice = document.createElement('SPAN');
   spanMinPrice.textContent = LOWDAY;
   minPrice.appendChild(spanMinPrice);
 
   const varPrice = document.createElement('P');
+  varPrice.classList.add('results')
   varPrice.textContent = 'Price variation last 24 hours: ';
   const spanVarPrice = document.createElement('SPAN');
   spanVarPrice.textContent = `${CHANGEPCT24HOUR}%`;
   varPrice.appendChild(spanVarPrice);
 
   const lastUpdate = document.createElement('P');
+  lastUpdate.classList.add('results')
   lastUpdate.textContent = 'Last update: ';
   const spanLastUpdate = document.createElement('SPAN');
   spanLastUpdate.textContent = LASTUPDATE;
@@ -132,4 +142,17 @@ function cleanHTML(target) {
   while(target.firstElementChild) {
     target.firstElementChild.remove();
   }
+}
+
+function showSpinner() {
+  cleanHTML(result);
+  const spinner = document.createElement('DIV');
+  spinner.classList.add('spinner');
+
+  spinner.innerHTML = `
+    <div class="double-bounce1"></div>
+    <div class="double-bounce2"></div>
+  `
+
+  result.appendChild(spinner)
 }
