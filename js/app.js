@@ -85,7 +85,7 @@ function callAPI() {
     fetch(url)
     .then(response => response.json())
     .then(data => showQuoteHtml(data.DISPLAY[cryptoCurrency][currency]))
-  },1100)
+  },800)
 
 }
 
@@ -97,7 +97,7 @@ function showQuoteHtml(quoteResponseApi) {
   
   const price = document.createElement('P');
   price.classList.add('precio', 'results');
-  price.textContent = 'Price is: ';
+  price.textContent = 'Current price is: ';
   const spanPrice = document.createElement('SPAN');
   spanPrice.textContent = PRICE;
   price.appendChild(spanPrice);
